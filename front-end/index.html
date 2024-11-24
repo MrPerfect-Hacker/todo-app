@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Todo App</h1>
+
+    <!-- Login/Registratie formulier -->
+    <div id="auth-container">
+      <form id="login-form">
+        <h2>Inloggen</h2>
+        <input type="text" id="login-username" placeholder="Gebruikersnaam" required />
+        <input type="password" id="login-password" placeholder="Wachtwoord" required />
+        <button type="submit">Inloggen</button>
+      </form>
+      
+      <form id="register-form">
+        <h2>Registreren</h2>
+        <input type="text" id="register-username" placeholder="Gebruikersnaam" required />
+        <input type="password" id="register-password" placeholder="Wachtwoord" required />
+        <button type="submit">Registreren</button>
+      </form>
+    </div>
+
+    <!-- Todo App (verborgen totdat ingelogd is) -->
+    <div id="todo-container" style="display: none;">
+      <!-- Taak Toevoegen -->
+      <form id="task-form">
+        <input type="text" id="title" placeholder="Titel van de taak" required />
+        <textarea id="description" placeholder="Beschrijving van de taak" required></textarea>
+        <button type="submit">Taak Toevoegen</button>
+      </form>
+
+      <h2>Taken</h2>
+      <ul id="task-list">
+        <!-- Dynamisch gegenereerde taken komen hier -->
+      </ul>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

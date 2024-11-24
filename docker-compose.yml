@@ -1,0 +1,38 @@
+version: '3'
+services:
+  # Gebruikers-service
+  users-service:
+    build:
+      context: ./users-service
+    ports:
+      - "5000:5000"  # Exposeer poort 5000 voor de gebruikers-service
+    networks:
+      - todo-network
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
+
+  # Taken-service
+  tasks-service:
+    build:
+      context: ./tasks-service
+    ports:
+      - "5001:5001"  # Exposeer poort 5001 voor de taken-service
+    networks:
+      - todo-network
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
+
+  # Front-end
+  frontend:
+    build:
+      context: ./front-end
+    ports:
+      - "80:80"  # Frontend draait op poort 80
+    networks:
+      - todo-network
+
+networks:
+  todo-network:
+    driver: bridge
