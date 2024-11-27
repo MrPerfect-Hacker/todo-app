@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Docker registry en algemene variabelen
-        REGISTRY = "your-docker-registry" 
+        REGISTRY = "atrium5365" // dit is de naam van je Docker Hub-account
         BRANCH = "main" // De Git branch die je wilt gebruiken
         dockerhub_credentials = credentials('atrium5365-dockerhub') // Jenkins credentials ID voor Docker Hub
     }
