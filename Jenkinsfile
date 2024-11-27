@@ -5,7 +5,7 @@ pipeline {
         // Docker registry en algemene variabelen
         REGISTRY = "atrium5365" // dit is de naam van je Docker Hub-account
         BRANCH = "main" // De Git branch die je wilt gebruiken
-        IMAGE_TAG: "v1.0" // Tag voor de Docker-images
+        IMAGE_TAG= "v1.0" // Tag voor de Docker-images
         dockerhub_credentials = credentials('atrium5365-dockerhub') // Jenkins credentials ID voor Docker Hub
     }
 
@@ -23,7 +23,7 @@ pipeline {
                     echo 'Building users-service...'
                     // Ga naar de map van users-service en bouw het Docker-image
                     dir('Users-service') {
-                        sh 'docker build -t ${REGISTRY}/users-service:latest .'
+                        sh 'docker build -t ${REGISTRY}/users-service:${IMAGE_TAG} .'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline {
                     echo 'Building tasks-service...'
                     // Ga naar de map van task-service en bouw het Docker-image
                     dir('tasks-service') {
-                        sh 'docker build -t ${REGISTRY}/tasks-service:latest .'
+                        sh 'docker build -t ${REGISTRY}/tasks-service:${IMAGE_TAG} .'
                     }
                 }
             }
@@ -47,7 +47,7 @@ pipeline {
                     echo 'Building frontend...'
                     // Ga naar de map van frontend en bouw het Docker-image
                     dir('front-end') {
-                        sh 'docker build -t ${REGISTRY}/frontend:latest .'
+                        sh 'docker build -t ${REGISTRY}/frontend:${IMAGE_TAG} .'
                     }
                 }
             }
@@ -62,13 +62,13 @@ pipeline {
 
                     // Push de Docker-images naar de registry
                     echo 'Pushing users-service image...'
-                    sh 'docker push ${REGISTRY}/users-service:latest'
+                    sh 'docker push ${REGISTRY}/users-service:${IMAGE_TAG}'
 
                     echo 'Pushing tasks-service image...'
-                    sh 'docker push ${REGISTRY}/tasks-service:latest'
+                    sh 'docker push ${REGISTRY}/tasks-service:${IMAGE_TAG}'
 
                     echo 'Pushing frontend image...'
-                    sh 'docker push ${REGISTRY}/frontend:latest'
+                    sh 'docker push ${REGISTRY}/frontend:${IMAGE_TAG}'
                 }
             }
         }
