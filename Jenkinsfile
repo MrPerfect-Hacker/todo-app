@@ -1,16 +1,11 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:27.4.0-dind'  // Gebruik een Docker-in-Docker image
-            args '--privileged'  // Vereist om Docker binnen de container uit te voeren
-        }
-    }
+    agent any
 
     environment {
         // Docker registry en algemene variabelen
-        REGISTRY = "atrium5365" // Dit is de naam van je Docker Hub-account
+        REGISTRY = "atrium5365" // dit is de naam van je Docker Hub-account
         BRANCH = "main" // De Git branch die je wilt gebruiken
-        IMAGE_TAG = "v1.0" // Tag voor de Docker-images
+        IMAGE_TAG: "v1.0" // Tag voor de Docker-images
         dockerhub_credentials = credentials('atrium5365-dockerhub') // Jenkins credentials ID voor Docker Hub
     }
 
