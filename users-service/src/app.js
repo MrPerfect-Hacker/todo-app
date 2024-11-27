@@ -28,5 +28,5 @@ app.listen(PORT, async () => { // async is nodig om connectDB aan te roepen
     console.log(`Server is running on port ${PORT}`); // dit is nodig om te zien of de server draait
 })
 
-
+module.exports = app;  // Exporteer de app voor gebruik in tests
 

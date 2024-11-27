@@ -22,3 +22,5 @@ app.listen(PORT, async () => {
   await connectDB();
   console.log(`Tasks-service draait op poort ${PORT}`);
 });
+
+module.exports = app;  // Exporteer de app zodat het beschikbaar is voor tests
