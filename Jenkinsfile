@@ -2,10 +2,13 @@ pipeline {
     agent {
         kubernetes {
             label 'docker-enabled'  // Label for your agent template
-            defaultContainer 'jnlp'  // Default container for the job
-            containers {
-                containerTemplate(name: 'docker', image: 'docker:19.03.12', command: 'cat', ttyEnabled: true)
-            }
+            defaultContainer 'jnlp'  // Default container for Jenkins' JNLP communication
+            containerTemplate(
+                name: 'docker', 
+                image: 'docker:19.03.12', 
+                command: 'cat', 
+                ttyEnabled: true
+            )
         }
     }
 
