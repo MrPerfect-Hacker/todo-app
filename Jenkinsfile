@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Build Userservice') {
+/*        stage('Build Userservice') {
             steps {
                 script {
                     echo 'Building users-service...'
@@ -36,7 +36,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Build Taskservice') {
             steps {
                 script {
