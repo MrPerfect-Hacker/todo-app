@@ -1,8 +1,11 @@
 pipeline {
     agent {
-         dockerContainer  {
-            image 'docker:19.03.12' // Docker-enabled image
-            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket
+        kubernetes {
+            label 'docker-enabled'  // Label for your agent template
+            defaultContainer 'jnlp'  // Default container for the job
+            containers {
+                containerTemplate(name: 'docker', image: 'docker:19.03.12', command: 'cat', ttyEnabled: true)
+            }
         }
     }
 
