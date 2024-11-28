@@ -1,26 +1,24 @@
 pipeline {
     agent {
         kubernetes {
-            label 'docker-enabled'  // Label for your agent template
-            defaultContainer 'jnlp'  // Default container for the job
+            label 'docker-enabled'
+            defaultContainer 'jnlp'
             containers {
-                containerTemplate(name: 'docker', image: 'docker:19.03.12', command: 'cat', ttyEnabled: true)
+                containerTemplate(name: 'docker', image: 'docker:19.03.12-dind', command: 'cat', ttyEnabled: true)
             }
         }
     }
 
     environment {
-        // Docker registry en algemene variabelen
-        REGISTRY = "atrium5365" // dit is de naam van je Docker Hub-account
-        BRANCH = "main" // De Git branch die je wilt gebruiken
-        IMAGE_TAG= "v1.0" // Tag voor de Docker-images
-        dockerhub_credentials = credentials('atrium5365-dockerhub') // Jenkins credentials ID voor Docker Hub
+        REGISTRY = "atrium5365"
+        BRANCH = "main"
+        IMAGE_TAG = "v1.0"
+        dockerhub_credentials = credentials('atrium5365-dockerhub')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Haal de code op uit de repository
                 git branch: "${BRANCH}", url: 'https://github.com/MrPerfect-Hacker/todo-app.git'
             }
         }
@@ -29,7 +27,6 @@ pipeline {
             steps {
                 script {
                     echo 'Building users-service...'
-                    // Ga naar de map van users-service en bouw het Docker-image
                     dir('Users-service') {
                         sh 'docker build -t ${REGISTRY}/users-service:${IMAGE_TAG} .'
                     }
@@ -41,7 +38,6 @@ pipeline {
             steps {
                 script {
                     echo 'Building tasks-service...'
-                    // Ga naar de map van task-service en bouw het Docker-image
                     dir('tasks-service') {
                         sh 'docker build -t ${REGISTRY}/tasks-service:${IMAGE_TAG} .'
                     }
@@ -53,7 +49,6 @@ pipeline {
             steps {
                 script {
                     echo 'Building frontend...'
-                    // Ga naar de map van frontend en bouw het Docker-image
                     dir('front-end') {
                         sh 'docker build -t ${REGISTRY}/frontend:${IMAGE_TAG} .'
                     }
@@ -64,17 +59,12 @@ pipeline {
         stage('Push Microservices') {
             steps {
                 script {
-                    // Log in naar Docker Hub met behulp van de environment-variabele voor credentials
                     echo 'Logging in to Docker Hub...'
                     sh "docker login -u ${dockerhub_credentials_USR} -p ${dockerhub_credentials_PSW}"
-
-                    // Push de Docker-images naar de registry
                     echo 'Pushing users-service image...'
                     sh 'docker push ${REGISTRY}/users-service:${IMAGE_TAG}'
-
                     echo 'Pushing tasks-service image...'
                     sh 'docker push ${REGISTRY}/tasks-service:${IMAGE_TAG}'
-
                     echo 'Pushing frontend image...'
                     sh 'docker push ${REGISTRY}/frontend:${IMAGE_TAG}'
                 }
@@ -83,7 +73,6 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                // Opruimen van lokale Docker-afbeeldingen
                 echo 'Cleaning up Docker images...'
                 sh 'docker system prune -f'
             }
@@ -92,7 +81,6 @@ pipeline {
 
     post {
         always {
-            // Acties die altijd moeten worden uitgevoerd, ongeacht of de pipeline succesvol is of niet
             echo 'Pipeline finished.'
         }
         success {
